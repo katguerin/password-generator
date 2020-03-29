@@ -10,59 +10,71 @@ var generateBtn = document.querySelector("#generate");
 
 // Write password to the #password input
 function writePassword() {
+    var password = generatePassword();
+
+    if(password !== false){
+        var passwordText = document.querySelector("#password");
+        passwordText.value = password;
+    }
+}
+
+function generatePassword() {
     var charLength = Number(window.prompt("How long would you like your password to be?", "8"));
     while (charLength >= 129 || charLength <= 7){
         charLength = Number(window.prompt("Password needs to be between 8 - 128 characters")); 
     } 
-    console.log("password length is " + charLength);
+    // console.log("password length is " + charLength);
 
     var charLowercase = window.confirm("Do you want lower case letters?");
-    console.log("I want lower case " + charLowercase);
+    // console.log("I want lower case " + charLowercase);
 
     var charUppercase = window.confirm("Do you want upper case letters?");
-    console.log("I want upper case " + charUppercase);
+    // console.log("I want upper case " + charUppercase);
 
     var charNumber = window.confirm("Do you want numbers?");
-    console.log("I want numbers " + charNumber);
+    // console.log("I want numbers " + charNumber);
 
-    var charSpecial = window.confirm("Do you want upper special characters?");
-    console.log("I want special characters " + charSpecial);
+    var charSymbol = window.confirm("Do you want special characters?");
+    // console.log("I want special characters " + charSymbol);   
 
-
-
-    function generatePassword(charLowercase, charUppercase, charNumber, charSpecial, charLength) {
-
-        var generatePassword = '';
-    
-        var typesCount = charLowercase + charUppercase + charNumber + charSpecial;
-
-        console.log('typesCount: ', typesCount);
-
-        var typesArr = [{ charLowercase }, { charUppercase }, { charNumber }, { charSpecial }].filter
-        (
-            item => Object.values(item)[0]
-        );
-        
-        console.log('typesArr: ', typesArr);
-
-        if(typesCount === 0) {
-            return '';
-        }    
-
-        for(let i = 0; i < charLength; i += charLength) {
-            typesArr.forEach(type => {
-
-            });
-        }
-
-//   var password = generatePassword();
-//   var passwordText = document.querySelector("#password");
-
-//   passwordText.value = password;
-
-    
+    var password = '';
+   
+    if (charLowercase == false && charUppercase == false && charNumber == false && charSymbol == false){
+        alert('You must choose at least one option, please try again.');
+        return false;
     }
+
+    for (i = 0; i < charLength;){
+        if (charLowercase) {
+            password = password + getRandomLower();   
+            // console.log(password);
+            i++;
+            if (i == charLength) break;
+        }
+        if (charUppercase) {
+            password = password + getRandomUpper();   
+            // console.log(password);
+            i++;
+            if (i == charLength) break;
+        }
+        if (charNumber) {
+            password = password + getRandomNumber();   
+            // console.log(password);
+            i++;
+            if (i == charLength) break;
+        }
+        if (charSymbol) {
+            password = password + getRandomSymbol();   
+            // console.log(password);
+            i++;
+            if (i == charLength) break;
+        }
+    }
+
+    // console.log('The password is ' + password);
+    return password;
 }
+
 
 function getRandomLower() {
     return String.fromCharCode(Math.floor(Math.random() * 26) + 97);
@@ -81,13 +93,5 @@ function getRandomSymbol() {
     return symbols[Math.floor(Math.random() * symbols.length)];
 }
 
-
-
 // Add event listener to generate button
 generateBtn.addEventListener("click", writePassword);
-
-
-console.log('getRandomLower ' + getRandomLower()); 
-console.log('getRandomUpper ' + getRandomUpper()); 
-console.log('getRandomNumber ' + getRandomNumber()); 
-console.log('getRandomSymbol ' + getRandomSymbol()); 
